@@ -1,6 +1,5 @@
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 import java.util.zip.DataFormatException;
@@ -20,14 +19,10 @@ public class Main {
             "XCI", "XCII", "XCIII", "XCIV", "XCV", "XCVI", "XCVII", "XCVIII", "XCIX", "C"};
 
 
-
-    public static void main (String[] args) throws IllegalArgumentException, DataFormatException {
+    public static void main(String[] args) throws IllegalArgumentException, DataFormatException {
         System.out.println("Введите выражение");
-
-        String userInput = scanner.nextLine().replace(" ","");
-
+        String userInput = scanner.nextLine().replace(" ", "");
         char[] underChar = new char[10];
-
         for (int i = 0; i < userInput.length(); i++) {
             underChar[i] = userInput.charAt(i);
             if (underChar[i] == '+') {
@@ -43,32 +38,22 @@ public class Main {
                 operation = '/';
             }
         }
-
         String[] part = userInput.split("[+-/*]");
         int l = part.length;
+
         String part1 = part[0];
         String part2 = part[1];
 
-
-           if (part1.equals(arab) && part1.equals(roman)) {
-                throw new DataFormatException();
-            }
-
-            if (part1.equals(roman) && part1.equals(arab)) {
-                throw new DataFormatException();
-            }
-
-            if (l > 2){
-            throw new DataFormatException();
-       }
+        if (part1.equals(arab) && part2.equals(roman)) throw new DataFormatException();
+        if (part1.equals(roman) && part2.equals(arab)) throw new DataFormatException();
+        if (l > 2) throw new DataFormatException();
 
         number1 = romanToNumber(part1);
         number2 = romanToNumber(part2);
 
-
         if (number1 < 0 && number2 < 0) {
             result = 0;
-        }else {
+        } else {
             result = calculated(number1, number2, operation);
 
             String resultRoman = convertNumToRoman(result);
@@ -83,72 +68,73 @@ public class Main {
         System.out.println(result);
 
     }
-        public static String convertNumToRoman (int numArabian) {
 
-            final String s = roman[numArabian];
+    public static String convertNumToRoman(int numArabian) {
 
-            return s;
+        final String s = roman[numArabian];
+
+        return s;
+    }
+
+
+    private static int romanToNumber(@NotNull String roman) {
+        try {
+            if (roman.equals("I")) {
+                return 1;
+            } else if (roman.equals("II")) {
+                return 2;
+            } else if (roman.equals("III")) {
+                return 3;
+            } else if (roman.equals("IV")) {
+                return 4;
+            } else if (roman.equals("V")) {
+                return 5;
+            } else if (roman.equals("VI")) {
+                return 6;
+            } else if (roman.equals("VII")) {
+                return 7;
+            } else if (roman.equals("VIII")) {
+                return 8;
+            } else if (roman.equals("IX")) {
+                return 9;
+            } else if (roman.equals("X")) {
+                return 10;
+            }
+        } catch (InputMismatchException e) {
+            throw new InputMismatchException("Неверный формат данных");
         }
+        return -1;
+    }
 
+    public static int calculated(int num1, int num2, char op) {
+        if (number1 < 0 || number2 < 0) {
+            throw new InputMismatchException();
+        }
+        int result = 0;
+        switch (op) {
+            case '+':
+                result = num1 + num2;
+                break;
+            case '-':
+                result = num1 - num2;
+                break;
+            case '*':
+                result = num1 * num2;
+                break;
+            case '/':
+                try {
+                    result = num1 / num2;
+                } catch (ArithmeticException | InputMismatchException e) {
+                    System.out.println("Exception : " + e);
+                    System.out.println("Only integer non-zero parameters allowed");
 
-        private static int romanToNumber (@NotNull String roman) {
-            try {
-                if (roman.equals("I")) {
-                    return 1;
-                } else if (roman.equals("II")) {
-                    return 2;
-                } else if (roman.equals("III")) {
-                    return 3;
-                } else if (roman.equals("IV")) {
-                    return 4;
-                } else if (roman.equals("V")) {
-                    return 5;
-                } else if (roman.equals("VI")) {
-                    return 6;
-                } else if (roman.equals("VII")) {
-                    return 7;
-                } else if (roman.equals("VIII")) {
-                    return 8;
-                } else if (roman.equals("IX")) {
-                    return 9;
-                } else if (roman.equals("X")) {
-                    return 10;
+                    break;
                 }
-            } catch (InputMismatchException e) {
-                throw new InputMismatchException("Неверный формат данных");
-            }
-            return -1;
+                break;
+            default:
+                throw new IllegalArgumentException("Не верный знак операции");
         }
-
-        public static int calculated (int num1, int num2, char op) {
-           if(number1 < 0 ||  number2 < 0){
-               throw  new InputMismatchException();
-           }
-            int result = 0;
-            switch (op) {
-                case '+':
-                    result = num1 + num2;
-                    break;
-                case '-':
-                    result = num1 - num2;
-                    break;
-                case '*':
-                    result = num1 * num2;
-                    break;
-                case '/':
-                    try {
-                        result = num1 / num2;
-                    } catch (ArithmeticException | InputMismatchException e) {
-                        System.out.println("Exception : " + e);
-                        System.out.println("Only integer non-zero parameters allowed");
-
-                        break;
-                    }
-                    break;
-                default:
-                    throw new IllegalArgumentException("Не верный знак операции");
-            }
-            return result;
+        return result;
     }
 
 }
