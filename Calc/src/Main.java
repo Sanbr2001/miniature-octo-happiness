@@ -34,7 +34,7 @@ public class Main {
     }
 
 
-    static String calc(String input) throws DataFormatException {
+    public static String calc(String input) throws DataFormatException {
 
         String[] part = input.split("[+-/*]");
         int l = part.length;
